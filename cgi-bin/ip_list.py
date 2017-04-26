@@ -6,7 +6,6 @@ import json
 import sys
 import geoip2.database
 
-
 class Response:
   
   def __init__(self):
@@ -20,8 +19,12 @@ class Response:
     pass
   
   
-  def add_result(self, lat=0, lon=0):
-    self.results.append({ lat: lat, lon: lon })
+  def add_result(self, ip=None, lat=0, lon=0):
+    self.results.append({ 
+      "ip": ip, 
+      "lat": lat, 
+      "lon": lon 
+    })
   
   
   def to_json(self):
@@ -44,7 +47,7 @@ try:
       try:
         test_ip = line.strip("\n")
         ip = reader.city(test_ip)
-        resp.add_result(lat=ip.location.latitude, lon=ip.location.longitude)
+        resp.add_result(ip=test_ip, lat=ip.location.latitude, lon=ip.location.longitude)
       except geoip2.errors.AddressNotFoundError:
         pass # ignore this IP
   
@@ -57,4 +60,4 @@ except BaseException as e:
   resp.set_error(e)
   print "Status: 500 Internal Server Error"
   print ""
-  print "{ error: %s }" % str(e)
+  print "{ \"success\": false, \"error\": \"%s\" }" % str(e)
