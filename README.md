@@ -1,2 +1,9 @@
-# ip-locations
-IP locations on google maps
+# IP Locations
+
+Displays locations on a google map using IP address and GeoLite DB
+
+# Usage
+
+start via:
+
+    python -m CGIHTTPServer
